@@ -98,16 +98,21 @@
 	
 	You'll need to pass the tests defined in minimax_specs.js.
 	*/
-	var heuristic = function(state, maximizingPlayer){
+	var heuristic = function(state, maxPlayer){
 
-		var minimizingPlayer = (maximizingPlayer == 'x') ? 'o' : 'x';
+		var minPlayer = (maxPlayer == 'x') ? 'o' : 'x';
 		//This is how you can retrieve the minimizing player.
 
-        var linesOfLengthTwoForX = state.numLines(2, 'x')
-        //An example 
-
+        var linesOfLengthTwoForMax = state.numLines(2, maxPlayer)
+        var linesOfLengthTwoForMin = state.numLines(2, minPlayer)
+        var linesOfLengthThreeForMax = state.numLines(3, maxPlayer)
+        var linesOfLengthThreeForMin = state.numLines(3, minPlayer)
         //Your code here.  Don't return random, obviously.
-		return Math.random()
+
+        var linesMax = linesOfLengthTwoForMax + linesOfLengthThreeForMax;
+        var linesMin = (linesOfLengthTwoForMin + linesOfLengthThreeForMin) * -1;
+
+        return linesMax+linesMin
 	}
 
 
@@ -139,7 +144,11 @@
 		var possibleStates = state.nextStates();
 		var currentPlayer = state.nextMovePlayer;
 		//Your code here.
-		return Math.random();
+		if(depth == 0){
+			return heuristic(state, maximizingPlayer);
+		} else{
+		 return minimax(state, depth-1, maximizingPlayer);
+		}
 	}
 
 
